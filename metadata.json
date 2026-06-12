@@ -1,6 +1,0 @@
-{
-  "name": "DevOtion",
-  "description": "An open-source developer hub where programmers share honest reviews and upvote dev tools like Firebase, Supabase, React and Next.js.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
