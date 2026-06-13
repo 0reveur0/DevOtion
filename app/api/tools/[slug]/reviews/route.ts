@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const [reviewsResult, countResult] = await Promise.all([
     supabase
       .from('reviews')
-      .select('id, tool_slug, user_id, rating, title, content, created_at, updated_at')
+      .select('id, tool_slug, user_id, rating, title, content, vote_count, created_at, updated_at')
       .eq('tool_slug', slug)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1),

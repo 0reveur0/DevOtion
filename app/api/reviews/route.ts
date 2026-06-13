@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
   const [reviewsResult, countResult] = await Promise.all([
     supabase
       .from('reviews')
-      .select('id, tool_slug, user_id, rating, title, content, created_at, updated_at')
+      .select('id, tool_slug, user_id, rating, title, content, vote_count, created_at, updated_at')
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1),
     supabase.from('reviews').select('*', { count: 'exact', head: true }),
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       title: dto.title.trim(),
       content: dto.content.trim(),
     })
-    .select('id, tool_slug, user_id, rating, title, content, created_at, updated_at')
+    .select('id, tool_slug, user_id, rating, title, content, vote_count, created_at, updated_at')
     .single()
 
   if (error) {

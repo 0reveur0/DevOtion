@@ -9,7 +9,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
   const { data, error } = await supabase
     .from('reviews')
-    .select('id, tool_slug, user_id, rating, title, content, created_at, updated_at')
+    .select('id, tool_slug, user_id, rating, title, content, vote_count, created_at, updated_at')
     .eq('id', id)
     .single()
 
@@ -70,7 +70,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     .from('reviews')
     .update(updates)
     .eq('id', id)
-    .select('id, tool_slug, user_id, rating, title, content, created_at, updated_at')
+    .select('id, tool_slug, user_id, rating, title, content, vote_count, created_at, updated_at')
     .single()
 
   if (error) {
