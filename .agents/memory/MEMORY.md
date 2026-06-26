@@ -1,0 +1,2 @@
+- [DevOtion design system](devotion-design.md) — Retro-Modern Tech: off-white bg, cobalt blue accent, mono fonts for metrics, flat borders — no dark slate, no gradients, no blurs
+- [DevOtion reviews API integrity](devotion-reviews-api.md) — 9 endpoints; flat Review response (no envelope); updatedAt required in all review items; auth is pre-implementation (client-supplied usernames)

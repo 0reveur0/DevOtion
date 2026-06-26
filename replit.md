@@ -1,6 +1,6 @@
-# [Project name]
+# DevOtion
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Community-powered reviews for developer tools — honest opinions from real developers, not vendor marketing.
 
 ## Run & Operate
 
@@ -14,6 +14,7 @@ _Replace the heading above with the project's name, and this line with one sente
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
+- Frontend: Vite + React, Wouter (routing), TanStack Query, Tailwind CSS v4
 - API: Express 5
 - DB: PostgreSQL + Drizzle ORM
 - Validation: Zod (`zod/v4`), `drizzle-zod`
@@ -22,23 +23,45 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/devotion/` — Vite + React frontend
+  - `src/constants/` — mock data (`mockData.ts`) and categories/tools (`categories.ts`)
+  - `src/types/index.ts` — shared TypeScript types (Category, Tool, Review, User)
+  - `src/pages/` — home, tool detail, category, profile, not-found
+  - `src/components/` — navbar, footer, tool-card, category-card, search-bar
+- `artifacts/api-server/` — Express 5 API
+  - `src/routes/reviews.ts` — 9 review endpoints with integrity checks
+  - `src/routes/tools.ts` — tools, categories, stats endpoints
+- `lib/db/src/schema/` — Drizzle schema (reviews table + review_votes table)
+- `lib/api-spec/openapi.yaml` — source of truth for API contract
+- `lib/api-client-react/` — generated React Query hooks (run codegen to update)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Frontend uses local mock data (`constants/mockData.ts`) for tool list/pros/cons — real DB reviews overlay via API when available
+- Reviews table has unique constraint on `(tool_slug, author_username)` — one review per user per tool
+- `review_votes` table tracks individual upvotes; prevents self-vote and duplicates at DB level
+- Auth is pre-implementation: ownership checks use client-supplied `authorUsername` — a real session/JWT system is a planned follow-up
+- Category grid uses `gap-px bg-gray-200` mosaic pattern to achieve seamless tiled layout
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Browse and search developer tools across 9 categories (Frontend, Backend, Database, DevOps, Cloud, Mobile, AI, Testing, Design)
+- View detailed tool pages with pros/cons panels and community reviews
+- Upvote helpful reviews (no self-votes, no duplicates)
+- Search with keyboard-driven dropdown autocomplete (`/` shortcut)
+- Profile pages with review history
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- **Design system**: Retro-Modern Tech (Option A) — `#f8f9fa` off-white background, white card surfaces, cobalt blue (`blue-600`) accents, `font-mono` for metrics/tags/breadcrumbs, solid `border-gray-200` borders, flat `shadow-[2px_2px_0px_0px_rgba(0,0,0,0.06)]` on hover. Zero gradients, zero blurs, zero neon borders.
+- Grid layout: `grid gap-px bg-gray-200` mosaic for tool/category grids
+- Absolutely NO dark slate theme, NO radial gradients, NO glowing borders
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- After editing `lib/db/src/schema/`, run `pnpm --filter @workspace/db run push` to apply to dev DB
+- After editing `lib/api-spec/openapi.yaml`, run `pnpm --filter @workspace/api-spec run codegen` to regenerate client hooks
+- API server port is 8080 internally (mapped to `/api` prefix via proxy); do not hardcode 5000
 
 ## Pointers
 
