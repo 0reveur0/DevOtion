@@ -6,10 +6,6 @@ import {
   RiCalendarLine,
   RiSettingsLine,
 } from '@remixicon/react'
-import { CustomCard } from '@/components/ui/custom-card'
-import { CustomButton } from '@/components/ui/custom-button'
-import { UserAvatar } from '@/components/user-avatar'
-import { EmptyState } from '@/components/empty-state'
 import { MOCK_USER } from '@/constants'
 
 export default function ProfilePage() {
@@ -18,76 +14,77 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="py-12">
-        <div className="container max-w-4xl text-center">
-          <h1 className="text-2xl font-bold text-gray-900">User Not Found</h1>
-          <p className="mt-2 text-gray-600">The profile you're looking for doesn't exist.</p>
-        </div>
+      <div className="min-h-screen bg-slate-950 py-20 text-center">
+        <h1 className="text-2xl font-bold text-white">User Not Found</h1>
+        <p className="mt-2 text-slate-400">The profile you're looking for doesn't exist.</p>
       </div>
     )
   }
 
   return (
-    <div className="py-12">
+    <div className="min-h-screen bg-slate-950 py-12">
       <div className="container max-w-4xl">
         {/* Profile Header */}
-        <CustomCard className="p-8">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-8">
           <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-            <UserAvatar name={user.name} size="xl" className="h-24 w-24 text-2xl" />
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="h-20 w-20 rounded-2xl bg-slate-800 ring-1 ring-slate-700"
+            />
             <div className="flex-1 text-center sm:text-left">
-              <div className="flex flex-col items-center gap-2 sm:items-start">
-                <h1 className="text-2xl font-bold text-gray-900">{user.name}</h1>
-                <span className="text-gray-500">@{user.username}</span>
+              <div className="flex flex-col items-center gap-1 sm:items-start">
+                <h1 className="text-2xl font-bold text-white">{user.name}</h1>
+                <span className="text-slate-500">@{user.username}</span>
               </div>
-              <p className="mt-3 max-w-lg text-gray-600">{user.bio}</p>
-              <div className="mt-4 flex items-center gap-1 text-sm text-gray-500">
+              <p className="mt-3 max-w-lg text-slate-400">{user.bio}</p>
+              <div className="mt-4 flex items-center gap-1.5 text-sm text-slate-500">
                 <RiCalendarLine className="h-4 w-4" />
                 <span>Joined {user.joinedDate}</span>
               </div>
             </div>
-            <CustomButton variant="outline" className="self-start">
-              <RiSettingsLine className="mr-2 h-4 w-4" />
+            <button className="self-start inline-flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-700 transition-colors">
+              <RiSettingsLine className="h-4 w-4" />
               Edit Profile
-            </CustomButton>
+            </button>
           </div>
 
           {/* Stats */}
-          <div className="mt-8 grid grid-cols-3 gap-4 border-t border-gray-100 pt-6">
+          <div className="mt-8 grid grid-cols-3 gap-4 border-t border-slate-800 pt-6">
             <div className="text-center">
-              <div className="flex items-center justify-center gap-1">
-                <RiChatQuoteLine className="h-5 w-5 text-gray-400" />
-                <span className="text-2xl font-bold text-gray-900">{user.reviewsCount}</span>
+              <div className="flex items-center justify-center gap-1.5">
+                <RiChatQuoteLine className="h-5 w-5 text-indigo-400" />
+                <span className="text-2xl font-bold text-white">{user.reviewsCount}</span>
               </div>
-              <p className="mt-1 text-sm text-gray-500">Reviews</p>
+              <p className="mt-1 text-sm text-slate-500">Reviews</p>
             </div>
             <div className="text-center">
-              <div className="flex items-center justify-center gap-1">
-                <RiThumbUpLine className="h-5 w-5 text-gray-400" />
-                <span className="text-2xl font-bold text-gray-900">{user.totalUpvotesReceived}</span>
+              <div className="flex items-center justify-center gap-1.5">
+                <RiThumbUpLine className="h-5 w-5 text-indigo-400" />
+                <span className="text-2xl font-bold text-white">{user.totalUpvotesReceived}</span>
               </div>
-              <p className="mt-1 text-sm text-gray-500">Upvotes Received</p>
+              <p className="mt-1 text-sm text-slate-500">Upvotes Received</p>
             </div>
             <div className="text-center">
-              <div className="flex items-center justify-center gap-1">
-                <RiStarLine className="h-5 w-5 text-gray-400" />
-                <span className="text-2xl font-bold text-gray-900">--</span>
+              <div className="flex items-center justify-center gap-1.5">
+                <RiStarLine className="h-5 w-5 text-amber-400" />
+                <span className="text-2xl font-bold text-white">--</span>
               </div>
-              <p className="mt-1 text-sm text-gray-500">Avg Rating Given</p>
+              <p className="mt-1 text-sm text-slate-500">Avg Rating Given</p>
             </div>
           </div>
-        </CustomCard>
+        </div>
 
         {/* Reviews List */}
         <div className="mt-10">
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">Recent Reviews</h2>
+          <h2 className="mb-6 text-xl font-bold text-white">Recent Reviews</h2>
+          <div className="rounded-2xl border border-slate-800 bg-slate-900 py-16 text-center">
+            <RiChatQuoteLine className="mx-auto h-10 w-10 text-slate-700" />
+            <p className="mt-3 font-semibold text-slate-400">No reviews yet</p>
+            <p className="mt-1 text-sm text-slate-600">
+              This user hasn't written any reviews yet.
+            </p>
           </div>
-
-          <EmptyState
-            icon={<RiChatQuoteLine className="h-12 w-12" />}
-            title="No reviews yet"
-            description="This user hasn't written any reviews yet. Reviews will appear here when they do."
-          />
         </div>
       </div>
     </div>
