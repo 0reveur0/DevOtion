@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 
 function Router() {
   return (
-    <div className="flex min-h-screen flex-col font-sans">
+    <div className="dark flex min-h-screen flex-col font-sans bg-slate-950">
       <Navbar />
       <main className="flex-1">
         <Switch>

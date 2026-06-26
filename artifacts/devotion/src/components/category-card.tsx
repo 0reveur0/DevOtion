@@ -12,7 +12,7 @@ import {
   RiPaletteLine,
   RiArrowRightLine,
 } from '@remixicon/react'
-import { CustomCard } from '@/components/ui/custom-card'
+import { cn } from '@/lib/utils'
 import type { Category } from '@/types'
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -37,21 +37,23 @@ export function CategoryCard({ category, toolCount = 0 }: CategoryCardProps) {
 
   return (
     <Link href={`/category/${category.slug}`}>
-      <CustomCard className="group cursor-pointer transition-all hover:border-gray-400 hover:shadow-md">
-        <div className="p-6">
-          <div className="flex items-start justify-between">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-50">
-              <IconComponent className="h-6 w-6 text-gray-600" />
-            </div>
-            <RiArrowRightLine className="h-5 w-5 text-gray-300 transition-colors group-hover:text-gray-600" />
+      <div className="group cursor-pointer rounded-xl border border-slate-800 bg-slate-900 p-5 transition-all duration-200 hover:border-slate-600 hover:bg-slate-800/80">
+        <div className="flex items-start justify-between">
+          <div className={cn('flex h-11 w-11 items-center justify-center rounded-lg bg-slate-800 ring-1 ring-slate-700 transition-colors group-hover:ring-slate-500', category.color?.replace('text-', 'bg-').replace('400', '400/10'))}>
+            <IconComponent className={cn('h-5 w-5', category.color || 'text-slate-400')} />
           </div>
-          <div className="mt-4">
-            <h3 className="font-semibold text-gray-900">{category.name}</h3>
-            <p className="mt-1 text-sm text-gray-500 line-clamp-2">{category.description}</p>
-          </div>
-          {toolCount > 0 && <p className="mt-3 text-xs text-gray-400">{toolCount} tools</p>}
+          <RiArrowRightLine className="h-4 w-4 text-slate-600 transition-all group-hover:text-slate-400 group-hover:translate-x-0.5" />
         </div>
-      </CustomCard>
+        <div className="mt-4">
+          <h3 className="font-semibold text-slate-100">{category.name}</h3>
+          <p className="mt-1 text-sm text-slate-500 line-clamp-2">{category.description}</p>
+        </div>
+        {toolCount > 0 && (
+          <p className="mt-3 text-xs text-slate-600">
+            {toolCount} tool{toolCount !== 1 ? 's' : ''}
+          </p>
+        )}
+      </div>
     </Link>
   )
 }

@@ -14,6 +14,7 @@ export interface Category {
   name: string
   description: string
   icon: string
+  color: string
 }
 
 export interface Tool {
@@ -27,6 +28,8 @@ export interface Tool {
   githubUrl?: string
   avgRating: number
   totalReviews: number
+  pros?: string[]
+  cons?: string[]
 }
 
 export interface Review {

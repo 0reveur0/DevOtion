@@ -1,0 +1,21 @@
+CRITICAL UI DESIGN DIRECTION (Strictly avoid generic AI-generated templates):
+
+I want to completely avoid the generic "AI SaaS template" look (no overly dark slate backgrounds, no glowing radial gradients, no neon borders with heavy blurs, and no generic cards with white/10 borders). 
+
+Instead, give DevOtion a distinct, tactile, and professional developer-centric aesthetic. Follow these specific styling rules using Tailwind CSS:
+
+1. Typography & Layout:
+- Use a rigid, high-information-density layout reminiscent of technical documentation (Stripe Docs, Linear, or TailwindCSS Docs).
+- Use monospace fonts for metrics, numbers, tags, and code elements to lean into the hacker/developer vibe.
+
+2. Color Palette Options (Choose ONE cohesive theme for the entire app):
+- Option A (Retro-Modern Tech): Soft off-white backgrounds (#f8f9fa) with crisp, sharp dark borders, and single-color accents (like an intense terminal green or a deep cobalt blue).
+- Option B (Sophisticated Minimalist Dark): High-contrast dark theme using true ink blacks (#0d0e12 or #000000) with solid mid-gray lines (not translucent ones).
+- Option C (Neo-brutalisme Light): Pure white backgrounds, thick black borders (border-2 border-black), and flat sharp shadows instead of soft blurs (e.g., shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]).
+
+3. Component Styling:
+- Borders & Shadows: Use solid, defined borders and sharp, flat box-shadows rather than blurry ambient glows.
+- Content Presentation: Organize reviews, pros/cons, and categories into clean, high-density structured lists or tables rather than floating, rounded cards. It should look clean, organized, and deeply utilitarian.
+- Badges & Tags: Use subtle, flat background fills with distinct text colors (e.g., a "Frontend" tag should look like a clean GitHub label, not a glowing pill).
+
+Please apply this design DNA to all components and pages you write from now on. Do not explain or generate any images, just output the pure, production-ready Next.js + Tailwind CSS code following this specific aesthetic.
