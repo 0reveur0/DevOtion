@@ -89,6 +89,7 @@ export const FetchToolReviewsResponse = zod.object({
   "title": zod.string(),
   "content": zod.string(),
   "createdAt": zod.string(),
+  "updatedAt": zod.string(),
   "upvotes": zod.number()
 })),
   "pagination": zod.object({
@@ -101,11 +102,43 @@ export const FetchToolReviewsResponse = zod.object({
 
 
 /**
- * @summary Create a review
+ * @summary List all reviews with optional filtering
+ */
+export const ListReviewsQueryParams = zod.object({
+  "toolSlug": zod.coerce.string().optional(),
+  "page": zod.coerce.number().optional(),
+  "limit": zod.coerce.number().optional()
+})
+
+export const ListReviewsResponse = zod.object({
+  "reviews": zod.array(zod.object({
+  "id": zod.string(),
+  "toolSlug": zod.string(),
+  "authorUsername": zod.string(),
+  "authorAvatar": zod.string().nullish(),
+  "rating": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string(),
+  "upvotes": zod.number()
+})),
+  "pagination": zod.object({
+  "page": zod.number(),
+  "limit": zod.number(),
+  "total": zod.number(),
+  "totalPages": zod.number()
+})
+})
+
+
+/**
+ * @summary Create a review (one per user per tool)
  */
 export const CreateReviewBody = zod.object({
   "toolSlug": zod.string(),
   "authorUsername": zod.string(),
+  "authorAvatar": zod.string().optional(),
   "rating": zod.number(),
   "title": zod.string(),
   "content": zod.string()
@@ -120,12 +153,13 @@ export const CreateReviewResponse = zod.object({
   "title": zod.string(),
   "content": zod.string(),
   "createdAt": zod.string(),
+  "updatedAt": zod.string(),
   "upvotes": zod.number()
 })
 
 
 /**
- * @summary Get a review
+ * @summary Get a review by ID
  */
 export const GetReviewParams = zod.object({
   "id": zod.coerce.string()
@@ -140,18 +174,81 @@ export const GetReviewResponse = zod.object({
   "title": zod.string(),
   "content": zod.string(),
   "createdAt": zod.string(),
+  "updatedAt": zod.string(),
   "upvotes": zod.number()
 })
 
 
 /**
- * @summary Upvote a review
+ * @summary Update own review (owner-only)
+ */
+export const UpdateReviewParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const UpdateReviewBody = zod.object({
+  "authorUsername": zod.string(),
+  "rating": zod.number().optional(),
+  "title": zod.string().optional(),
+  "content": zod.string().optional()
+})
+
+export const UpdateReviewResponse = zod.object({
+  "id": zod.string(),
+  "toolSlug": zod.string(),
+  "authorUsername": zod.string(),
+  "authorAvatar": zod.string().nullish(),
+  "rating": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string(),
+  "upvotes": zod.number()
+})
+
+
+/**
+ * @summary Delete own review (owner-only)
+ */
+export const DeleteReviewParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteReviewBody = zod.object({
+  "authorUsername": zod.string()
+})
+
+export const DeleteReviewResponse = zod.void()
+
+
+/**
+ * @summary Upvote a review (no self-votes, no duplicates)
  */
 export const UpvoteReviewParams = zod.object({
   "id": zod.coerce.string()
 })
 
+export const UpvoteReviewBody = zod.object({
+  "voterUsername": zod.string()
+})
+
 export const UpvoteReviewResponse = zod.object({
+  "upvotes": zod.number()
+})
+
+
+/**
+ * @summary Remove a previously cast upvote
+ */
+export const RemoveUpvoteParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const RemoveUpvoteBody = zod.object({
+  "voterUsername": zod.string()
+})
+
+export const RemoveUpvoteResponse = zod.object({
   "upvotes": zod.number()
 })
 

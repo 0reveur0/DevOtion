@@ -6,11 +6,9 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface ReviewInput {
-  toolSlug: string;
+export interface UpdateReviewInput {
   authorUsername: string;
-  authorAvatar?: string;
-  rating: number;
-  title: string;
-  content: string;
+  rating?: number;
+  title?: string;
+  content?: string;
 }

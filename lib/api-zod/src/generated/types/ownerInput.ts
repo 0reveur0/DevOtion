@@ -6,11 +6,6 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface ReviewInput {
-  toolSlug: string;
+export interface OwnerInput {
   authorUsername: string;
-  authorAvatar?: string;
-  rating: number;
-  title: string;
-  content: string;
 }

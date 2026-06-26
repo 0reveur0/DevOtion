@@ -16,5 +16,6 @@ export interface Review {
   title: string;
   content: string;
   createdAt: string;
+  updatedAt: string;
   upvotes: number;
 }

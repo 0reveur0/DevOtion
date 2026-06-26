@@ -51,15 +51,32 @@ export interface Review {
   title: string;
   content: string;
   createdAt: string;
+  updatedAt: string;
   upvotes: number;
 }
 
 export interface ReviewInput {
   toolSlug: string;
   authorUsername: string;
+  authorAvatar?: string;
   rating: number;
   title: string;
   content: string;
+}
+
+export interface UpdateReviewInput {
+  authorUsername: string;
+  rating?: number;
+  title?: string;
+  content?: string;
+}
+
+export interface OwnerInput {
+  authorUsername: string;
+}
+
+export interface VoterInput {
+  voterUsername: string;
 }
 
 export interface ReviewListResponse {
@@ -94,5 +111,11 @@ category?: string;
 page?: number;
 limit?: number;
 search?: string;
+};
+
+export type ListReviewsParams = {
+toolSlug?: string;
+page?: number;
+limit?: number;
 };
 

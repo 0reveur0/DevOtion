@@ -9,7 +9,9 @@
 export * from './category';
 export * from './categoryListResponse';
 export * from './healthStatus';
+export * from './listReviewsParams';
 export * from './listToolsParams';
+export * from './ownerInput';
 export * from './pagination';
 export * from './platformStats';
 export * from './review';
@@ -18,4 +20,6 @@ export * from './reviewListResponse';
 export * from './tool';
 export * from './toolDetailResponse';
 export * from './toolListResponse';
+export * from './updateReviewInput';
 export * from './upvoteResponse';
+export * from './voterInput';

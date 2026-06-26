@@ -81,7 +81,7 @@ router.post("/reviews", async (req, res) => {
     })
     .returning();
 
-  res.status(201).json({ review: formatReview(review) });
+  res.status(201).json(formatReview(review));
 });
 
 /** GET /reviews/:id */
@@ -102,7 +102,7 @@ router.get("/reviews/:id", async (req, res) => {
     return;
   }
 
-  res.json({ review: formatReview(review) });
+  res.json(formatReview(review));
 });
 
 /** PATCH /reviews/:id — update own review (owner-only) */

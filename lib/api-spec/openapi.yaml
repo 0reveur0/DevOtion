@@ -102,10 +102,35 @@ paths:
                 $ref: "#/components/schemas/ReviewListResponse"
 
   /reviews:
+    get:
+      operationId: listReviews
+      tags: [reviews]
+      summary: List all reviews with optional filtering
+      parameters:
+        - name: toolSlug
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewListResponse"
+
     post:
       operationId: createReview
       tags: [reviews]
-      summary: Create a review
+      summary: Create a review (one per user per tool)
       requestBody:
         required: true
         content:
@@ -119,12 +144,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Review"
+        "409":
+          description: Already reviewed this tool
 
   /reviews/{id}:
     get:
       operationId: getReview
       tags: [reviews]
-      summary: Get a review
+      summary: Get a review by ID
       parameters:
         - name: id
           in: path
@@ -141,17 +168,75 @@ paths:
         "404":
           description: Not found
 
-  /reviews/{id}/upvote:
-    post:
-      operationId: upvoteReview
+    patch:
+      operationId: updateReview
       tags: [reviews]
-      summary: Upvote a review
+      summary: Update own review (owner-only)
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateReviewInput"
+      responses:
+        "200":
+          description: Updated review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "403":
+          description: Forbidden — not the review author
+        "404":
+          description: Not found
+
+    delete:
+      operationId: deleteReview
+      tags: [reviews]
+      summary: Delete own review (owner-only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OwnerInput"
+      responses:
+        "204":
+          description: Deleted
+        "403":
+          description: Forbidden — not the review author
+        "404":
+          description: Not found
+
+  /reviews/{id}/upvote:
+    post:
+      operationId: upvoteReview
+      tags: [reviews]
+      summary: Upvote a review (no self-votes, no duplicates)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoterInput"
       responses:
         "200":
           description: Updated upvote count
@@ -159,6 +244,36 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UpvoteResponse"
+        "403":
+          description: Forbidden — self-vote
+        "409":
+          description: Already upvoted
+
+    delete:
+      operationId: removeUpvote
+      tags: [reviews]
+      summary: Remove a previously cast upvote
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VoterInput"
+      responses:
+        "200":
+          description: Updated upvote count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpvoteResponse"
+        "404":
+          description: Vote not found
 
   /categories:
     get:
@@ -241,7 +356,7 @@ components:
 
     Review:
       type: object
-      required: [id, toolSlug, authorUsername, rating, title, content, createdAt, upvotes]
+      required: [id, toolSlug, authorUsername, rating, title, content, createdAt, updatedAt, upvotes]
       properties:
         id:
           type: string
@@ -259,6 +374,8 @@ components:
           type: string
         createdAt:
           type: string
+        updatedAt:
+          type: string
         upvotes:
           type: integer
 
@@ -270,11 +387,40 @@ components:
           type: string
         authorUsername:
           type: string
+        authorAvatar:
+          type: string
         rating:
           type: integer
         title:
           type: string
         content:
+          type: string
+
+    UpdateReviewInput:
+      type: object
+      required: [authorUsername]
+      properties:
+        authorUsername:
+          type: string
+        rating:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+
+    OwnerInput:
+      type: object
+      required: [authorUsername]
+      properties:
+        authorUsername:
+          type: string
+
+    VoterInput:
+      type: object
+      required: [voterUsername]
+      properties:
+        voterUsername:
           type: string
 
     ReviewListResponse:
