@@ -3,13 +3,19 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: DevOtion API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: tools
+    description: Tool operations
+  - name: reviews
+    description: Review operations
+  - name: categories
+    description: Category operations
 paths:
   /healthz:
     get:
@@ -24,6 +30,162 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /tools:
+    get:
+      operationId: listTools
+      tags: [tools]
+      summary: List tools
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+        - name: search
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of tools
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolListResponse"
+
+  /tools/{slug}:
+    get:
+      operationId: getTool
+      tags: [tools]
+      summary: Get a tool by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tool detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolDetailResponse"
+        "404":
+          description: Not found
+
+  /tools/{slug}/reviews:
+    get:
+      operationId: fetchToolReviews
+      tags: [reviews]
+      summary: List reviews for a tool
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of reviews
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReviewListResponse"
+
+  /reviews:
+    post:
+      operationId: createReview
+      tags: [reviews]
+      summary: Create a review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+
+  /reviews/{id}:
+    get:
+      operationId: getReview
+      tags: [reviews]
+      summary: Get a review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Review
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Review"
+        "404":
+          description: Not found
+
+  /reviews/{id}/upvote:
+    post:
+      operationId: upvoteReview
+      tags: [reviews]
+      summary: Upvote a review
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Updated upvote count
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpvoteResponse"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all categories with tool counts
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryListResponse"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [tools]
+      summary: Get platform stats
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +196,149 @@ components:
       required:
         - status
 
+    Tool:
+      type: object
+      required: [id, name, slug, description, category, avgRating, totalReviews]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        longDescription:
+          type: ["string", "null"]
+        category:
+          type: string
+        websiteUrl:
+          type: ["string", "null"]
+        githubUrl:
+          type: ["string", "null"]
+        avgRating:
+          type: number
+        totalReviews:
+          type: integer
+
+    ToolListResponse:
+      type: object
+      required: [tools, pagination]
+      properties:
+        tools:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tool"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
+    ToolDetailResponse:
+      type: object
+      required: [tool]
+      properties:
+        tool:
+          $ref: "#/components/schemas/Tool"
+
+    Review:
+      type: object
+      required: [id, toolSlug, authorUsername, rating, title, content, createdAt, upvotes]
+      properties:
+        id:
+          type: string
+        toolSlug:
+          type: string
+        authorUsername:
+          type: string
+        authorAvatar:
+          type: ["string", "null"]
+        rating:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+        upvotes:
+          type: integer
+
+    ReviewInput:
+      type: object
+      required: [toolSlug, rating, title, content, authorUsername]
+      properties:
+        toolSlug:
+          type: string
+        authorUsername:
+          type: string
+        rating:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+
+    ReviewListResponse:
+      type: object
+      required: [reviews, pagination]
+      properties:
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/Review"
+        pagination:
+          $ref: "#/components/schemas/Pagination"
+
+    UpvoteResponse:
+      type: object
+      required: [upvotes]
+      properties:
+        upvotes:
+          type: integer
+
+    Category:
+      type: object
+      required: [slug, name, description, icon, toolCount]
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        toolCount:
+          type: integer
+
+    CategoryListResponse:
+      type: object
+      required: [categories]
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+
+    PlatformStats:
+      type: object
+      required: [totalTools, totalReviews, totalCategories]
+      properties:
+        totalTools:
+          type: integer
+        totalReviews:
+          type: integer
+        totalCategories:
+          type: integer
+
+    Pagination:
+      type: object
+      required: [page, limit, total, totalPages]
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
