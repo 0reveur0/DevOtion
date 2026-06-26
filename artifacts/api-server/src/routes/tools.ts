@@ -133,6 +133,7 @@ router.get("/tools/:slug/reviews", async (req, res) => {
       title: r.title,
       content: r.content,
       createdAt: r.createdAt.toISOString(),
+      updatedAt: r.updatedAt.toISOString(),
       upvotes: r.upvotes,
     })),
     pagination: {

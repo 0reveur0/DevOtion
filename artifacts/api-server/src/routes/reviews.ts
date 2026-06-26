@@ -156,7 +156,7 @@ router.patch("/reviews/:id", async (req, res) => {
     .where(eq(reviewsTable.id, id))
     .returning();
 
-  res.json({ review: formatReview(updated) });
+  res.json(formatReview(updated));
 });
 
 /** DELETE /reviews/:id — delete own review (owner-only) */
