@@ -1,0 +1,8 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "UEJC9PgZ3cdL4pRnPlWqL"
+uri = "file://artifacts/devotion-mobile/assets/images/icon.png"
+type = "image"
+title = "devotion mobile app icon"
