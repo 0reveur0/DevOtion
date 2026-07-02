@@ -1,0 +1,26 @@
+PREREQUISITES CHECKED: The modular data files in `constants/data/` are now ready and fully typed. 
+
+YOUR NEXT TASK: Implement the complete frontend UI for the Tool Detail Page and the Social Review Feed, strictly adhering to our "Dev-Pastel Minimalist" aesthetic (Crisp ink-black text, soft pastel accents, solid zinc-200 borders, monospace metrics, and 100% text-emojis replaced by Remix Icons).
+
+You must split this into two clean, modular files. Do not merge them.
+
+1. Create `components/review-card.tsx` (Client Component for interactivity):
+- This component renders a single developer review like a social media post (Twitter/X style).
+- Layout: 
+  * Header: User avatar, display name, `@username` (font-mono), and professional headline (e.g., "Staff Engineer @ GitHub"). Add a clean, flat pastel green badge for "GitHub Verified" if true.
+  * Rating: A crisp, compact badge showing the star rating (using `RiStarFill`).
+  * Body: Rich review text, highly scannable.
+  * Action Bar: Clean, mathematically aligned flex row (`flex items-center gap-4 text-xs font-mono text-zinc-500`). Includes a Like button (`RiHeartLine`), Comment button (`RiChat3Line` showing comment count), and Share/Link button (`RiShareLine`).
+  * Nested Comments: If the review has comments, render them directly underneath in a high-density, slightly indented, flat vertical timeline. Each comment shows a micro-avatar, name, and their reply text.
+
+2. Create/Update `app/tools/[slug]/page.tsx` (Server Component by default):
+- Fetch/filter the specific tool from `constants/mockData.ts` based on the `slug` param. Handle the "404 Not Found" gracefully if the tool doesn't exist.
+- Layout:
+  * Top Hero Section: Clean, flat layout. Displays the tool's name, category badge (styled with its respective soft pastel color background), github/website action links, and overall score stats in monospace font.
+  * Content Split: A 2-column or structured layout:
+    - Left/Main Column: The Social Feed. Map over the filtered `socialReviews` for this tool and render the `<ReviewCard />` components.
+    - Right Column/Sidebar: A technical quick-spec card containing tool tags, package size/license placeholders (if any), and a clean "Write a Review" flat button trigger.
+
+Optimization Rule: Ensure that any state mutation (like toggling a Like or expanding comments) is handled locally inside the Client Components without breaking Server Component rendering rules.
+
+Output pure, production-ready TypeScript/TSX code for both files. No explanations, no placeholder shortcuts.

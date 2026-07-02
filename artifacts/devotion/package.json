@@ -72,9 +72,7 @@
     "vaul": "^1.1.2",
     "vite": "catalog:",
     "wouter": "^3.3.5",
-    "zod": "catalog:"
-  },
-  "dependencies": {
+    "zod": "catalog:",
     "@remixicon/react": "^4.9.0"
   }
 }

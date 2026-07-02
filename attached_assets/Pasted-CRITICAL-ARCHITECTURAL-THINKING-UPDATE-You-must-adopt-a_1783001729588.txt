@@ -1,0 +1,26 @@
+CRITICAL ARCHITECTURAL & THINKING UPDATE: 
+
+You must adopt a "Senior Architect" mindset. Do not code blindly or build monolithic files. Like solving (2025*2025)*(2**4-4**2) by recognizing the second term is 0 instead of computing the whole thing, you must find the most efficient, clean, and modular way to structure this application.
+
+1. MANDATORY CODE SPLITTING (Do NOT put everything in one file):
+Instead of cramming all 100+ stacks into a single `mockData.ts`, you must break the data down logically into multiple domain files, then export them through a clean central registry.
+Create this exact file structure:
+- `constants/data/frontend.ts` (Contains only frontend tools data)
+- `constants/data/backend.ts` (Contains only backend tools data)
+- `constants/data/database.ts` (Contains database & real-time stacks)
+- `constants/data/infra.ts` (Contains DevOps, Cloud, and Hosting tools)
+- `constants/data/ai-testing.ts` (Contains AI, Data engineering, and Testing tools)
+- `constants/data/socialFeed.ts` (Contains the complex social media reviews, comments, and user profiles)
+- `constants/mockData.ts` (The central hub: imports everything from above and exports a single unified `devTools` array and `socialReviews` array).
+
+2. SMART REUSE & PERFORMANCE THINKING:
+- Optimization: Do not duplicate author profiles inside the social reviews array. Create a reusable `mockUsers` map/object, and reference them by ID or a quick mapping logic to save memory and token generation size.
+- Maintainability: Ensure every file exports strictly typed TypeScript arrays.
+
+3. DATA EXPANSION EXECUTION:
+Expand the registry aggressively to over 100+ tools. If the code generation limit cuts you off, output the files one by one. Start by providing the code for:
+1. `constants/data/frontend.ts`
+2. `constants/data/socialFeed.ts` (with rich developer comments and profiles)
+3. `constants/mockData.ts` (the clean index entry point)
+
+Do not explain, do not leave placeholders like "// and so on". Show your technical intelligence by writing hyper-optimized, modular, production-ready TSX/TS code.
