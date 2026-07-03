@@ -1,0 +1,89 @@
+# DevOtion Cursor Rules — Global Authoritative Rules
+
+---
+
+## 1. Project Core Context
+
+- **Name:** DevOtion
+- **Mission:** Community-powered, high-density social-registry for 200+ real-world developer tools.
+
+This file is the single source of truth for automated code generation, PR reviews, and new feature scaffolding within this repository. All contributors and automation must follow these rules without exception.
+
+---
+
+## 2. Strict Architectural Rules
+
+- **Framework:** Next.js 14 App Router. Use React 18+ features where appropriate. All pages, routes, and layouts should use the App Router conventions.
+- **Language:** TypeScript only. All new code must be strictly typed. The use of the `any` type is prohibited in committed code. Use precise interfaces, utility generics, and mapped types instead of `any`.
+- **Modular Coding Only:** Monolithic files are forbidden. Large data, lists, or complex UI must be split into domain-specific modules:
+  - Data: place in `constants/data/*` (one logical domain per file).
+  - Types: central types in `src/types` or top-level `types` module; prefer small, composable types.
+  - UI components: small, focused components. Prefer composition over single large components.
+- **Server vs Client Components:** Default to Server Components. `use client` must be used explicitly and only at leaf components where interactive React hooks (`useState`, `useEffect`, `useRef`, etc.) are necessary. Do not wrap entire pages with `use client` unless every child requires client behavior.
+- **Data fetching:** Prefer Server Components for data fetching using Next.js conventions (fetch on the server; use server actions or dedicated API routes for mutations). Keep data fetching logic close to page-level Server Components; keep client components pure and receive data via props.
+- **State & Mutation:** Any persistent mutation (remote writes) must be implemented via server endpoints or server actions. Client components may manage local UI state only. Do not perform long-running or global mutations inside client components without server coordination.
+- **Performance:** Optimize for minimal server-client boundary transfers. Avoid transferring large raw datasets to client components; derive and send only what is needed for UI.
+
+---
+
+## 3. Uncompromising Design System (Dev-Pastel Minimalist)
+
+All visual decisions must follow the Dev-Pastel Minimalist design DNA. Any deviation must be approved and documented.
+
+- **Theme & Colors:**
+  - Background: `#F8F9FA` (warm off-white).
+  - Primary text (charcoal): `#1A1A1E`.
+  - Mechanical dividers: use `border-zinc-200` for all borders and separators.
+  - Accents: use flat pastel fills (soft, single-tone colors); avoid glows and complex gradients.
+
+- **No Ambient Fluff:**
+  - Forbidden: blurred drop-shadows, floating neon glows, heavy gradients, or any ambient/soft-focus effects.
+  - Use sharp, flat, utility-driven styles. Borders are crisp; spacing is compact.
+
+- **Typography:**
+  - Body/readability: use a neutral sans-serif system stack.
+  - Metrics, ratings, counts, handles, code, and tags: MUST use monospace (`font-mono`) everywhere for consistency and visual rhythm.
+
+- **Components & Badges:**
+  - Badges must use flat pastel fills with high-contrast text.
+  - Buttons are solid with clear affordances; primary actions use charcoal `#1A1A1E` filled button with white text.
+  - Hover states: subtle, sharp color or border changes only (e.g., `hover:border-zinc-900`).
+
+- **Density & Layout:**
+  - Prefer high information density: compact spacing, clear typographic hierarchy, and one-line metrics where possible.
+
+---
+
+## 4. Iconography Enforcement
+
+- **No text-emojis:** Text-based emojis (e.g., 🚀, ⭐, ✅, 🔥) are strictly banned in UI strings, docs, and commits.
+- **Remix Icons Only:** All visual indicators and icons must be React components from `@remixicon/react` (imported and used as components). No SVG blobs or inline <svg> unless absolutely necessary and approved.
+- **Alignment:** All icons must be wrapped in `flex` containers with consistent alignment utilities to maintain mathematical symmetry. Example wrapper pattern: `className="flex items-center gap-1.5"`.
+
+---
+
+## 5. Additional Engineering Rules (Style & Quality)
+
+- **Linting & Formatting:** Use the repository ESLint/Prettier configuration. All commits must pass `pnpm lint` and `pnpm format` where applicable before merging.
+- **Testing:** Add unit tests for new logic and components when behavior is non-trivial. Prefer small focused tests and snapshot tests for critical UI blocks.
+- **Accessibility:** Follow basic a11y standards: semantic HTML, visible focus states, ARIA attributes where necessary, and color contrast that meets AA for primary text.
+- **Names & Files:** Use kebab-case for filenames and exports that map to file names. Keep exports predictable and small.
+- **Documentation:** Every new domain data file must include a short header comment describing its purpose and the data schema.
+
+---
+
+## 6. CI / PR Expectations
+
+- **PR Scope:** PRs should be focused and small; avoid mixing unrelated changes (e.g., UI + data model changes) in a single PR.
+- **Checks:** Each PR must run type-checks, lint, and unit tests. The PR description must reference relevant issue(s) and list what was added or changed.
+
+---
+
+## 7. Enforcement & Exceptions
+
+- **Enforcement:** Automated tooling (linters, type checkers, and pre-commit hooks) must enforce these rules. Reviewers must block merges that violate rules.
+- **Exceptions:** Any exception requires an explicit rationale in the PR description and approval from a designated maintainer.
+
+---
+
+End of `.cursorrules` — this file is authoritative for code generation and app architecture in this repository.
